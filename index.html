@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Recursos Humanos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+        }
+
+        /* Cabeçalho */
+        header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .header-title h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .header-title p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .user-profile {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .user-profile:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Container Principal */
+        .container {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 1.5rem 0;
+        }
+
+        .sidebar-menu li {
+            margin: 0.5rem 0;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem 1.5rem;
+            color: #2c3e50;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: #ecf0f1;
+            border-left-color: #3498db;
+            color: #3498db;
+        }
+
+        .sidebar-menu i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .content-header {
+            margin-bottom: 2rem;
+        }
+
+        .content-header h2 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .content-header p {
+            color: #7f8c8d;
+            font-size: 0.95rem;
+        }
+
+        /* Grid de Cards */
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid #ecf0f1;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-color: #3498db;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .card:nth-child(2) .card-icon {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .card:nth-child(3) .card-icon {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+
+        .card:nth-child(4) .card-icon {
+            background: linear-gradient(135deg, #27ae60, #229954);
+        }
+
+        .card:nth-child(5) .card-icon {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+
+        .card:nth-child(6) .card-icon {
+            background: linear-gradient(135deg, #1abc9c, #16a085);
+        }
+
+        .card:nth-child(7) .card-icon {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+        }
+
+        .card:nth-child(8) .card-icon {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+        }
+
+        .card:nth-child(9) .card-icon {
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+        }
+
+        .card:nth-child(10) .card-icon {
+            background: linear-gradient(135deg, #16a085, #138d75);
+        }
+
+        .card:nth-child(11) .card-icon {
+            background: linear-gradient(135deg, #8e44ad, #7d3c98);
+        }
+
+        .card:nth-child(12) .card-icon {
+            background: linear-gradient(135deg, #c0392b, #a93226);
+        }
+
+        .card-title {
+            color: #2c3e50;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .card-description {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-top: 0.8rem;
+            line-height: 1.5;
+        }
+
+        .card-footer {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #ecf0f1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-stats {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+        }
+
+        .card-action {
+            width: 30px;
+            height: 30px;
+            background: #ecf0f1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3498db;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover .card-action {
+            background: #3498db;
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1.5rem 2rem;
+            margin-top: 2rem;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            }
+
+            .sidebar-menu {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                padding: 1rem;
+            }
+
+            .sidebar-menu li {
+                flex: 1;
+                min-width: 150px;
+            }
+
+            .sidebar-menu a {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .modules-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1rem;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .user-info {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-title h1 {
+                font-size: 1.2rem;
+            }
+
+            .content-header h2 {
+                font-size: 1.4rem;
+            }
+
+            .card-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .card-title {
+                font-size: 1rem;
+            }
+        }
+
+        /* Scroll */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #3498db;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cabeçalho -->
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-briefcase"></i>
+            </div>
+            <div class="header-title">
+                <h1>Sistema RH</h1>
+                <p>Gestão Integrada de Recursos Humanos</p>
+            </div>
+        </div>
+        <div class="user-info">
+            <span>Bem-vindo, Usuário</span>
+            <div class="user-profile">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Container Principal -->
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="#" data-module="dashboard"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="#" data-module="colaboradores"><i class="fas fa-users"></i> Colaboradores</a></li>
+                <li><a href="#" data-module="admissao"><i class="fas fa-user-plus"></i> Admissão</a></li>
+                <li><a href="#" data-module="ponto"><i class="fas fa-clock"></i> Ponto</a></li>
+                <li><a href="#" data-module="folha"><i class="fas fa-money-bill"></i> Folha</a></li>
+                <li><a href="#" data-module="ferias"><i class="fas fa-calendar"></i> Férias</a></li>
+                <li><a href="#" data-module="beneficios"><i class="fas fa-heart"></i> Benefícios</a></li>
+                <li><a href="#" data-module="documentos"><i class="fas fa-file-alt"></i> Documentos</a></li>
+                <li><a href="#" data-module="desempenho"><i class="fas fa-chart-bar"></i> Desempenho</a></li>
+                <li><a href="#" data-module="treinamento"><i class="fas fa-graduation-cap"></i> Treinamento</a></li>
+                <li><a href="#" data-module="relatorios"><i class="fas fa-bar-chart"></i> Relatórios</a></li>
+                <li><a href="#" data-module="seguranca"><i class="fas fa-lock"></i> Segurança</a></li>
+            </ul>
+        </aside>
+
+        <!-- Conteúdo Principal -->
+        <main class="main-content">
+            <div class="content-header">
+                <h2>Módulos do Sistema</h2>
+                <p>Acesse as principais funcionalidades de gestão de Recursos Humanos</p>
+            </div>
+
+            <!-- Grid de Cards -->
+            <div class="modules-grid">
+                <!-- Card 1 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div>
+                            <div class="card-title">Cadastro de Colaboradores</div>
+                        </div>
+                    </div>
+                    <div class="card-description">
+                        Gerenciamento de dados pessoais, cargos, salários e histórico funcional completo.
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-stats">
+                            <i class="fas fa-info-circle"></i> Ativo
+                        </div>
+                        <div class="card-action">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <div>
+                            <div class="card-title">Admissão e Desligamento</div>
+                        </div>
+                    </div>
+                    <div class="card-description">
+                        Controle de processo de admissão, documentação e desligamento de colaboradores.
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-stats">
+                            <i class="fas fa-info-circle"></i> 5 Pendentes
+                        </div>
+                        <div class="card-action">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div>
+                            <div class="card-title">Controle de Ponto</div>
+                        </div>
+                    </div>
+                    <div class="card-description">
+                        Registro de ponto, jornada de trabalho, horas extras e atrasos.
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-stats">
+                            <i class="fas fa-info-circle"></i> Atualizado
+                        </div>
+                        <div class="card-action">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div>
+                            <div class="card-title">Folha de Pagamento</div>
+                        </div>
+                    </div>
+                    <div class="card-description">
+                        Cálculo de salários, descontos, benefícios e emissão de contracheques.
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-stats">
+                            <i class="fas fa-info-circle"></i> Mês Atual
+                        </div>
+                        <div class="card-action">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div>
+                            <div class="card-title">Férias e Licenças</div>
+                        </div>
+                    </div>
+                    <div class="card-description">
+                        Controle de períodos de férias, licenças, afastamentos e plantões.
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-stats">
+                            <i class="fas fa-info-circle"></i> 12 Solicitações
+                        </div>
+                        <div class="card-action">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div>
+                            <div class="card-title">Benefícios</div>
+                        </div>
+                    </div>
+                    <div class="card-description">
+                        Gestão de convênios médicos, odontológicos, vale refeição e outros benefícios.
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-stats">
+                            <i class="fas fa-info-circle"></i> 8 Ativos
+                        </div>
+                        <div class="card-action">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 7 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-file-contract"></i>
+                        </div>
+                        <div>
+                            <div class="card-title">Documentos e Compliance</div>
+                        </div>
+                    </div>
+                    <div class="card-description">
+                        Arquivo digital de documentos, contratos e conformidade regulatória.
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-stats">
+                            <i class="fas fa-info-circle"></i> Em Dia
+                        </div>
+                        <div class="card-action">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 8 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div>
+                            <div class="card-title">Avaliação de Desempenho</div>
+                        </div>
+                    </div>
+                    <div class="card-description">
+                        Avaliações periódicas, metas, feedback e plano de desenvolvimento individual.
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-stats">
+                            <i class="fas fa-info-circle"></i> 8 em Progresso
+                        </div>
+                        <div class="card-action">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 9 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div>
+                            <div class="card-title">Treinamento e Desenvolvimento</div>
+                        </div>
+                    </div>
+                    <div class="card-description">
+                        Programas de capacitação, cursos, palestras e desenvolvimento profissional.
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-stats">
+                            <i class="fas fa-info-circle"></i> 15 Cursos
+                        </div>
+                        <div class="card-action">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 10 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div>
+                            <div class="card-title">Relatórios e Indicadores</div>
+                        </div>
+                    </div>
+                    <div class="card-description">
+                        Análise de dados, indicadores de performance e relatórios gerenciais customizados.
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-stats">
+                            <i class="fas fa-info-circle"></i> 25 Relatórios
+                        </div>
+                        <div class="card-action">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 11 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div>
+                            <div class="card-title">Portal do Colaborador</div>
+                        </div>
+                    </div>
+                    <div class="card-description">
+                        Autoatendimento para consulta de contracheque, saldo de férias e solicitações.
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-stats">
+                            <i class="fas fa-info-circle"></i> 150 Usuários
+                        </div>
+                        <div class="card-action">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 12 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div>
+                            <div class="card-title">Segurança e Permissões</div>
+                        </div>
+                    </div>
+                    <div class="card-description">
+                        Controle de acesso, perfis de usuário, auditoria e logs de sistema.
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-stats">
+                            <i class="fas fa-info-circle"></i> Seguro
+                        </div>
+                        <div class="card-action">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Sistema de Recursos Humanos. Todos os direitos reservados. | Versão 1.0</p>
+    </footer>
+
+    <script>
+        // Mapa de módulos para páginas
+        const moduloMap = {
+            'dashboard': './pages/dashboard.html',
+            'colaboradores': './pages/colaboradores.html',
+            'admissao': './pages/admissao.html',
+            'ponto': './pages/ponto.html',
+            'folha': './pages/folha.html',
+            'ferias': './pages/ferias.html',
+            'beneficios': './pages/beneficios.html',
+            'documentos': './pages/documentos.html',
+            'desempenho': './pages/desempenho.html',
+            'treinamento': './pages/treinamento.html',
+            'relatorios': './pages/relatorios.html',
+            'seguranca': './pages/seguranca.html'
+        };
+
+        // Menu interativo
+        document.querySelectorAll('.sidebar-menu a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.sidebar-menu a').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                const module = this.dataset.module;
+                console.log('Menu clicado:', module);
+                
+                // Navegar para o módulo
+                if (moduloMap[module]) {
+                    window.location.href = moduloMap[module];
+                } else {
+                    alert('Módulo ' + module + ' em desenvolvimento');
+                }
+            });
+        });
+
+        // Cards com hover animation e clique funcional
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', function() {
+                const title = this.querySelector('.card-title').textContent;
+                console.log('Card clicado:', title);
+                
+                // Mapear card para módulo
+                const cardMap = {
+                    'Cadastro de Colaboradores': 'colaboradores',
+                    'Admissão e Desligamento': 'admissao',
+                    'Registro de Ponto': 'ponto',
+                    'Folha de Pagamento': 'folha',
+                    'Férias e Licenças': 'ferias',
+                    'Benefícios': 'beneficios',
+                    'Documentos e Compliance': 'documentos',
+                    'Avaliação de Desempenho': 'desempenho',
+                    'Treinamento e Desenvolvimento': 'treinamento',
+                    'Relatórios e Indicadores': 'relatorios',
+                    'Portal do Colaborador': 'colaboradores',
+                    'Segurança e Permissões': 'seguranca'
+                };
+                
+                const module = cardMap[title];
+                if (module && moduloMap[module]) {
+                    window.location.href = moduloMap[module];
+                } else {
+                    alert('Você clicou em: ' + title);
+                }
+            });
+        });
+
+        // Responsividade do menu em mobile
+        window.addEventListener('resize', function() {
+            if (window.innerWidth <= 768) {
+                document.querySelector('.sidebar-menu').classList.add('mobile-menu');
+            }
+        });
+    </script>
+</body>
+</html>
